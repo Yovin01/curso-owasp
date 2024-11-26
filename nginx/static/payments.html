@@ -3,7 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User payments</title>
+    <title>User Payments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Azul claro */
+            color: #002147; /* Azul oscuro */
+        }
+        nav {
+            background-color: #0047ab; /* Azul intermedio */
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #0047ab; /* Azul intermedio */
+        }
+        p {
+            text-align: center;
+            margin: 10px 20px;
+            font-size: 18px;
+        }
+        .payment-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .payment-card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .payment-card p {
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -12,9 +69,9 @@
         <a id="profile" href="/profile">Profile</a>
         <a id="logout" href="/logout">Logout</a>
     </nav>
-    <h1>Payments</h1>
-    <p>Here you can view your payments.</p>
-    <div id="payments"></div>
+    <h1>User Payments</h1>
+    <p>Here you can view your payment history.</p>
+    <div id="payments" class="payment-list"></div>
     <script>
         const paymentsEl = document.getElementById('payments');
 
@@ -22,10 +79,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get('userId');
 
-        // human readable date
+        // human-readable date format
         const formatDate = (date) => {
             const d = new Date(date);
-            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         };
 
         // fetch payments and populate list
@@ -38,18 +95,21 @@
         .then(response => response.json())
         .then(data => {
             console.log(`Payments data: ${JSON.stringify(data)}`);
+            if (data.length === 0) {
+                paymentsEl.innerHTML = '<p>No payments found.</p>';
+                return;
+            }
             paymentsEl.innerHTML = data.map(payment => `
-                <div style="margin-bottom: 24px; border: 1px; border-radius: 8px;">
-                    <p>ID: ${payment.id}</p>
-                    <p>Date: ${formatDate(payment.date)}</p>
-                    <p>Amount: $${payment.amount}</p>
+                <div class="payment-card">
+                    <p><strong>ID:</strong> ${payment.id}</p>
+                    <p><strong>Date:</strong> ${formatDate(payment.date)}</p>
+                    <p><strong>Amount:</strong> $${payment.amount.toFixed(2)}</p>
                 </div>
             `).join('');
-            console.log('Payments data fetched and populated list');
         })
         .catch(error => {
             console.error('Error:', error);
-            paymentsEl.innerText = 'Error: ' + error;
+            paymentsEl.innerHTML = '<p style="color: red;">Error fetching payments: ' + error + '</p>';
         });
     </script>
 </body>

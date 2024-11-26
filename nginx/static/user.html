@@ -3,34 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        #user {
+            max-width: 600px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #0047ab;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        a {
+            color: #0077b5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: red;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div id="user"></div>
     <script>
         const user = document.getElementById('user');
 
-        // read userId from url
+        // Get userId from URL parameters
         const url = new URL(window.location.href);
         const userId = url.searchParams.get('userId');
 
-        // get user data from the server
+        // Fetch user data from the server
         fetch(`/api/users/${userId}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('User not found');
+                }
+                return response.json();
+            })
             .then(data => {
                 user.innerHTML = `
-                    <img style="width: 120px;height: 120px; border-radius: 50%; object-fit: cover;" src="/files/${data.username}.jpg" alt="Profile picture" />
+                    <img src="/files/${data.username}.jpg" alt="Profile picture">
                     <h3>${data.first_name} ${data.last_name}</h3>
-                    <p>About me</p>
+                    <p><strong>About me:</strong></p>
                     <p>${data.bio}</p>
-                    <p>Email: ${data.email}</p>
-                    <p>Phone: ${data.phone}</p>
-                    <p>Follow me on <a href="https://linkedin.com/in/${data.website}" target="_blank" noreferer noopener>LinkedIn</a></p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                    <p><strong>Phone:</strong> ${data.phone}</p>
+                    <p>Follow me on <a href="https://linkedin.com/in/${data.website}" target="_blank" rel="noreferrer noopener">LinkedIn</a></p>
                 `;
             })
             .catch(error => {
-                // unknown user
-                user.innerHTML = `<p style="color: red;">User not found</p>`;
+                user.innerHTML = `<p class="error">User not found</p>`;
             });
     </script>
 </body>

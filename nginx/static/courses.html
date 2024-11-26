@@ -4,6 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Courses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Azul claro */
+            color: #002147; /* Azul oscuro */
+        }
+        nav {
+            background-color: #0047ab; /* Azul intermedio */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #002147; /* Azul oscuro */
+        }
+        h1 {
+            text-align: center;
+            color: #0047ab; /* Azul intermedio */
+            margin: 20px 0;
+        }
+        p {
+            text-align: center;
+            font-size: 18px;
+        }
+        #courses {
+            max-width: 800px;
+            margin: 20px auto;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        .course-card {
+            background-color: #ffffff; /* Blanco */
+            border: 1px solid #dcdcdc; /* Gris claro */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .course-card p {
+            margin: 5px 0;
+        }
+        footer {
+            text-align: center;
+            background-color: #0047ab; /* Azul intermedio */
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -15,6 +76,9 @@
     <h1>Courses</h1>
     <p>Here you can view your courses.</p>
     <div id="courses"></div>
+    <footer>
+        Powered by Platzi.
+    </footer>
     <script>
         const coursesEl = document.getElementById('courses');
 
@@ -33,11 +97,11 @@
         .then(data => {
             console.log(`Courses data: ${JSON.stringify(data)}`);
             coursesEl.innerHTML = data.map(course => `
-                <div style="margin-bottom: 24px; border: 1px; border-radius: 8px;">
-                    <p>ID: ${course.id}</p>
-                    <p>Name: ${course.course_name}</p>
-                    <p>Description: ${course.course_description}</p>
-                    <p>Code: ${course.course_code}</p>
+                <div class="course-card">
+                    <p><strong>ID:</strong> ${course.id}</p>
+                    <p><strong>Name:</strong> ${course.course_name}</p>
+                    <p><strong>Description:</strong> ${course.course_description}</p>
+                    <p><strong>Code:</strong> ${course.course_code}</p>
                 </div>
             `).join('');
             console.log('Courses data fetched and populated list');

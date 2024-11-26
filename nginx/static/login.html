@@ -4,19 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Azul claro */
+            color: #002147; /* Azul oscuro */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background-color: #0047ab; /* Azul intermedio */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #002147; /* Azul oscuro */
+        }
+        form {
+            background-color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        legend {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0047ab; /* Azul intermedio */
+            margin-bottom: 20px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0047ab; /* Azul intermedio */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #002147; /* Azul oscuro */
+        }
+        #error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <nav>
         <a href="/">Home</a>
         <a href="/about">About</a>
     </nav>
-    <div>
-        <p id="error" style="color: red;"></p>
-    </div>
     <form id="loginForm">
         <legend>Iniciar Sesión</legend>
-        <input type="text" id="username" />
-        <input type="password" id="password" />
+        <p id="error"></p>
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
         <button type="submit">Iniciar Sesión</button>
     </form>
     <script>
