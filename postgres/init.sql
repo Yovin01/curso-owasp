@@ -62,6 +62,14 @@ CREATE TABLE user_payments (
   FOREIGN KEY (payment_id) REFERENCES payments (id)
 );
 
+CREATE TABLE active_tokens (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(500) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 INSERT INTO roles (role_name) VALUES ('admin');
 INSERT INTO roles (role_name) VALUES ('user');
 
