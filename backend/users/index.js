@@ -120,14 +120,21 @@ module.exports = function (httpRequestsTotal, dbConfig) {
             const { bio, username, first_name, last_name, email, phone, website } = req.body;
             console.log(`User: ${bio} ${username} ${first_name} ${last_name} ${email} ${phone} ${website}`);
 
+            // regex no links only usernames
+            const usernameRegex = /^[a-zA-Z0-9_]{1,15}$/;
+            if (!usernameRegex.test(website)) {
+                res.status(400).json({error: 'Invalid linkedin username'});
+                return;
+            }
+
             const user = await db.query(`
             UPDATE
                 users u
             SET
-                username = '${username}'
+                username = $1
             WHERE
-                u.id = ${userId};
-            `);
+                u.id = $2;
+            `, [username, userId]);
             console.log(`User rows: ${JSON.stringify(user)}`);
 
             const profile = await db.query(`
